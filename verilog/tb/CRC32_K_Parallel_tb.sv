@@ -29,17 +29,17 @@ module CRC32_K_Parallel_tb();
 	(	
 	// Main Control Signals
 	.clk(r_clk),
-   .rst_n(r_rst_n),
+   	.rst_n(r_rst_n),
     
 	// DownLoad Data Signals  
 	.i_Init(r_Init),
-   .i_RX_En(r_RX_En),
+  	.i_RX_En(r_RX_En),
 	.i_RX_Byte(r_RX_Byte),
      
 	// Output CRC Signals
 	.o_CRC(w_CRC),
 	.o_CRC_Xor(w_CRC_Xor),
-   .o_CRC_Reversed(w_CRC_Reversed),
+   	.o_CRC_Reversed(w_CRC_Reversed),
 	.o_CRC_Ready(w_CRC_Ready),
 	.o_CRC_Xor_Reserved(w_CRC_Xor_Reserved)
 	);
@@ -48,7 +48,7 @@ module CRC32_K_Parallel_tb();
 	task SendByte(input [7:0] data);
 		@(posedge r_clk);
 		r_RX_Byte	<= {data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]};
-		r_RX_En 		<= 1'b1;
+		r_RX_En 	<= 1'b1;
 		@(posedge r_clk);
 		r_RX_En		<= 1'b0;
 		@(posedge w_CRC_Ready);
@@ -58,21 +58,21 @@ module CRC32_K_Parallel_tb();
 	initial
 	begin
 		repeat(10) @(posedge r_clk);
-      r_rst_n = 1'b0;
-      repeat(10) @(posedge r_clk);
-      r_rst_n = 1'b1;
-      repeat(10) @(posedge r_clk);
+      	r_rst_n = 1'b0;
+      	repeat(10) @(posedge r_clk);
+      	r_rst_n = 1'b1;
+      	repeat(10) @(posedge r_clk);
 		r_Init = 1'b1;
 		@(posedge r_clk);
-      r_Init = 1'b0;
+      	r_Init = 1'b0;
 		
 
 
 		SendByte(8'hAA);
 		$display("Sent out 0x%X",8'hAA); 
-      SendByte(8'h81);
+      	SendByte(8'h81);
 		$display("Sent out 0x%X",8'h81);
-   	$display("CRC 0x%X",w_CRC);
+   		$display("CRC 0x%X",w_CRC);
 		repeat(10) @(posedge r_clk);	
 	end	
 
